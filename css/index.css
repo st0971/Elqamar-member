@@ -1,0 +1,172 @@
+/* ===== 全域樣式 ===== */
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  padding: 20px;
+}
+
+input {
+  margin: 5px 8px 5px 0;
+  padding: 8px;
+  font-size: 14px;
+}
+
+/* ===== 按鈕樣式 ===== */
+button {
+  border-radius: 6px;
+  border: none;
+  background-color: #7896AC;
+  color: white;
+  padding: 4px 10px;
+  cursor: pointer;
+  margin: 2px;
+}
+
+button:hover {
+  background-color: #56758A;
+}
+
+/* ===== 分頁按鈕樣式 ===== */
+#pagination {
+  margin-top: 12px;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+#pagination button {
+  background-color: #7896AC;
+  border-radius: 6px;
+  border: none;
+  color: white;
+  padding: 5px 9px;
+  margin: 0 2px;
+  cursor: pointer;
+}
+
+#pagination button:hover {
+  background-color: #56758A;
+}
+
+#pagination button.active {
+  font-weight: bold;
+  background-color: #345678;
+}
+
+/* ===== 表格樣式 ===== */
+#member-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  color: #542D13;
+}
+
+#member-table th,
+#member-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+/* 表頭排序箭頭樣式 */
+th {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: 16px;
+}
+
+th .arrow {
+  position: absolute;
+  right: 4px;
+  font-size: 12px;
+}
+
+/* ===== 輸入框樣式 ===== */
+/* 隱藏數字輸入框的上下鍵 */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+#member-form {
+  background: #eee;
+  padding: 15px;
+  margin-top: 20px;
+  max-width: 500px;
+  border-radius: 5px;
+}
+
+#member-form input[type="text"],
+#member-form input[type="number"] {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+#member-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+#member-form button {
+  margin-right: 10px;
+}
+/* 讓 '完成交易' 的表頭文字不換行 */
+#order-table th:nth-child(3) {
+  white-space: nowrap;
+}
+
+/* ===== 錯誤訊息樣式 ===== */
+.error {
+  color: rgb(247, 81, 81);
+}
+
+/* ===== 會員名稱超連結樣式 ===== */
+/* 統一連結樣式：表格與 Modal 共用 */
+a.member-link {
+  color: #542D13;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+a.member-link:hover {
+  color: #7896AC;
+  text-decoration: underline;
+}
+
+/* Modal 標題中的會員名稱放大 */
+#modal-title a.member-link {
+  font-size: 1.2em;
+}
+
+/* 表格內的連結補強，避免樣式被瀏覽器預設干擾 */
+#member-table a {
+  color: #542D13;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+#member-table a:hover {
+  color: #7896AC;
+  text-decoration: underline;
+}
+
+/* ===== 其他區塊樣式 ===== */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.controls {
+  margin-top: 15px;
+}
