@@ -1,5 +1,5 @@
 // 登入邏輯
-const USERNAME = "Elqmar@";
+const USERNAME = "Elqamar@";
 const PASSWORD = "Member@recorderpage";
 
 document.getElementById("login-form").addEventListener("submit", function (e) {
