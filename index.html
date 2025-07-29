@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>會員管理系統</title>
+  <link rel="stylesheet" href="css/index.css" />
+  <style>
+    /* Modal 基本樣式 */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 8px;
+    }
+    .modal table { width: 100%; margin-top: 10px; }
+    .modal table input { width: 90%; }
+    .modal .actions { margin-top: 10px; text-align: right; }
+  </style>
+</head>
+<body>
+  <!-- 登入頁面 -->
+  <div id="login-page">
+    <h2>會員管理登入</h2>
+    <form id="login-form">
+      <input type="text" id="username" placeholder="帳號" required />
+      <input type="password" id="password" placeholder="密碼" required />
+      <button type="submit">登入</button>
+    </form>
+    <p id="login-error"></p>
+  </div>
+
+  <!-- 主頁 -->
+  <div id="main-page" style="display:none;">
+    <div class="top-bar">
+      <h2>會員管理系統</h2>
+      <button onclick="logout()">登出</button>
+    </div>
+
+    <div class="controls">
+      <input type="text" id="search" placeholder="搜尋會員名稱" oninput="renderTable()" />
+      <button onclick="openAddForm()">新增</button>
+    </div>
+
+    <table id="member-table">
+      <thead>
+        <tr>
+          <th>編號</th>
+          <th>名稱</th>
+          <th>商品數量</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- 新增會員表單 -->
+  <form id="add-form" style="display:none; margin-top:20px;">
+    <h3>新增</h3>
+    <input type="text" id="name" placeholder="會員名稱" required />
+    <input type="text" id="url" placeholder="會員連結（可留空）" />
+    <br />
+    <button type="submit">儲存</button>
+    <button type="button" onclick="closeAddForm()">取消</button>
+  </form>
+
+  <!-- 訂單管理 Modal -->
+  <div id="order-modal" class="modal">
+    <div class="modal-content">
+      <h3 id="modal-title">會員名稱</h3>
+      <table id="order-table">
+        <thead>
+          <tr>
+            <th>商品</th>
+            <th>價格</th>
+            <th>完成交易</th>
+            <th>備註</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button onclick="addOrderRow()">新增</button>
+      <div class="actions">
+        <button onclick="saveOrders()">儲存</button>
+        <button onclick="closeModal()">關閉</button>
+      </div>
+    </div>
+  </div>
+<script>
+  // 禁止右鍵選單
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+
+  // 禁止特定快捷鍵
+  document.addEventListener('keydown', function(e) {
+    // F12
+    if (e.key === 'F12' || e.keyCode === 123) {
+      e.preventDefault();
+    }
+
+    // Ctrl+Shift+I (開發者工具)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) {
+      e.preventDefault();
+    }
+
+    // Ctrl+Shift+J (開發者工具 Console)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) {
+      e.preventDefault();
+    }
+
+    // Ctrl+U (查看原始碼)
+    if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+      e.preventDefault();
+    }
+
+    // Ctrl+S (儲存網頁)
+    if (e.ctrlKey && (e.key === 'S' || e.key === 's')) {
+      e.preventDefault();
+    }
+
+    // Ctrl+Shift+C (檢查元素)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c')) {
+      e.preventDefault();
+    }
+  });
+</script>
+
+  <script src="js/index.js"></script>
+  
+
+</body>
+</html>
