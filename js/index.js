@@ -224,8 +224,11 @@ function renderOrderRows() {
 function addOrderRow() {
   const member = members[editingMemberIndex];
   member.orders.push({ product: "", price: 0, done: false, note: "" });
-  renderOrderRows();
+  saveToStorage();     // ✅ 新增後儲存
+  renderOrderRows();   // ✅ 重新顯示訂單欄位
+  renderTable();       // ✅ 更新主畫面商品數量
 }
+
 
 function deleteOrder(i) {
   if (confirm("確定刪除此筆訂單？")) {
