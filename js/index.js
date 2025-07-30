@@ -24,8 +24,8 @@ function logout() {
 let members = [];
 let currentId = 0;
 let editingMemberIndex = -1;
+let editingMemberId = null;
 
-// 載入資料
 function loadMembers() {
   const data = localStorage.getItem("members");
   if (data) {
@@ -39,7 +39,6 @@ function saveToStorage() {
   localStorage.setItem("members", JSON.stringify(members));
 }
 
-// 渲染主表格
 function renderTable() {
   const keyword = document.getElementById("search").value.toLowerCase();
   const tbody = document.querySelector("#member-table tbody");
@@ -51,7 +50,7 @@ function renderTable() {
       const tr = document.createElement("tr");
       const orderCount = m.orders?.length || 0;
       tr.innerHTML = `
-        <td>${index + 1}</td> <!-- 用表格順序編號 -->
+        <td>${index + 1}</td>
         <td><a href="#" onclick="openOrderModal(${index})" class="member-link">${m.name}</a></td>
         <td>${orderCount}</td>
         <td>
@@ -61,33 +60,47 @@ function renderTable() {
       `;
       tbody.appendChild(tr);
     });
+
+  // 修正編輯中會員 index
+  if (editingMemberId !== null) {
+    const newIndex = members.findIndex(m => m.id === editingMemberId);
+    if (newIndex !== -1) {
+      editingMemberIndex = newIndex;
+    }
+  }
 }
 
 // 搜尋框即時更新
-document.getElementById("search").addEventListener("input", function() {
-  renderTable();
-});
+document.getElementById("search").addEventListener("input", renderTable);
 
 // 點擊外面清空搜尋框
-document.addEventListener("click", function(event) {
+document.addEventListener("click", function (event) {
   const searchInput = document.getElementById("search");
-  if (event.target !== searchInput) {
-    if (searchInput.value !== "") {
-      searchInput.value = "";
-      renderTable();
-    }
+  if (event.target !== searchInput && searchInput.value !== "") {
+    searchInput.value = "";
+    renderTable();
   }
 });
 
-// 新增會員表單
+// 新增會員
 document.getElementById("add-form").addEventListener("submit", function (e) {
   e.preventDefault();
   const name = document.getElementById("name").value.trim();
   const url = document.getElementById("url").value.trim();
+
   if (!name) {
     alert("請輸入名稱");
     return;
   }
+  if (members.some(m => m.name === name)) {
+    alert("已有相同名稱的會員名稱");
+    return;
+  }
+  if (url && members.some(m => m.url === url)) {
+    alert("已有相同連結的會員");
+    return;
+  }
+
   currentId++;
   members.push({
     id: currentId,
@@ -110,21 +123,33 @@ function closeAddForm() {
   document.getElementById("add-form").style.display = "none";
 }
 
-// 修改會員（名稱與連結）
 function editMember(index) {
   const member = members[index];
   const newName = prompt("請輸入新的名稱：", member.name);
   if (newName === null) return;
-  member.name = newName.trim() || member.name;
+  const trimmedName = newName.trim();
+  if (!trimmedName) return;
+
+  // 檢查重複名稱
+  if (members.some((m, i) => i !== index && m.name === trimmedName)) {
+    alert("已有相同名稱的會員");
+    return;
+  }
 
   const newUrl = prompt("請輸入新的連結：", member.url || "");
-  if (newUrl !== null) member.url = newUrl.trim();
+  const trimmedUrl = newUrl?.trim();
 
+  if (trimmedUrl && members.some((m, i) => i !== index && m.url === trimmedUrl)) {
+    alert("已有相同連結的會員");
+    return;
+  }
+
+  member.name = trimmedName;
+  member.url = trimmedUrl || "";
   saveToStorage();
   renderTable();
 }
 
-// 刪除會員
 function deleteMember(index) {
   if (confirm("確定要刪除？")) {
     members.splice(index, 1);
@@ -133,14 +158,13 @@ function deleteMember(index) {
   }
 }
 
-//////////////////////////
-// 訂單 Modal 操作區域 //
-//////////////////////////
-
+// 訂單 Modal
 function openOrderModal(index) {
   editingMemberIndex = index;
+  editingMemberId = members[index].id;
   const member = members[index];
-  document.getElementById("modal-title").innerHTML = `會員名稱：<a href="${member.url || '#'}" target="_blank" class="member-link">${member.name}</a>`;
+  document.getElementById("modal-title").innerHTML =
+    `會員名稱：<a href="${member.url || '#'}" target="_blank" class="member-link">${member.name}</a>`;
   document.getElementById("order-modal").style.display = "block";
   renderOrderRows();
 }
@@ -148,9 +172,14 @@ function openOrderModal(index) {
 function closeModal() {
   document.getElementById("order-modal").style.display = "none";
   editingMemberIndex = -1;
+  editingMemberId = null;
 }
 
-// 渲染訂單列
+// 點擊背景關閉 Modal
+document.getElementById("order-modal").addEventListener("click", function (e) {
+  if (e.target === this) closeModal();
+});
+
 function renderOrderRows() {
   const tbody = document.querySelector("#order-table tbody");
   tbody.innerHTML = "";
@@ -161,7 +190,7 @@ function renderOrderRows() {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td><input type="text" value="${order.product}" data-index="${i}" data-field="product" /></td>
-      <td><input type="number" value="${order.price}" data-index="${i}" data-field="price" /></td>
+      <td><input type="number" min="0" value="${order.price}" data-index="${i}" data-field="price" /></td>
       <td><input type="checkbox" ${order.done ? "checked" : ""} data-index="${i}" data-field="done" /></td>
       <td><input type="text" value="${order.note}" data-index="${i}" data-field="note" /></td>
       <td><button onclick="deleteOrder(${i})">刪除</button></td>
@@ -169,18 +198,25 @@ function renderOrderRows() {
     tbody.appendChild(tr);
   });
 
-  // 綁定即時更新欄位變化
+  // 綁定欄位變化事件
   tbody.querySelectorAll("input").forEach((input) => {
     input.addEventListener("change", (e) => {
       const idx = parseInt(e.target.dataset.index);
       const field = e.target.dataset.field;
+
       if (field === "done") {
         members[editingMemberIndex].orders[idx][field] = e.target.checked;
       } else if (field === "price") {
-        members[editingMemberIndex].orders[idx][field] = parseInt(e.target.value) || 0;
+        let val = parseInt(e.target.value);
+        val = isNaN(val) ? 0 : Math.max(0, val); // 防止 NaN 和負數
+        members[editingMemberIndex].orders[idx][field] = val;
+        e.target.value = val; // 同步修正輸入值
       } else {
         members[editingMemberIndex].orders[idx][field] = e.target.value;
       }
+
+      saveToStorage();
+      renderTable();
     });
   });
 }
@@ -194,7 +230,9 @@ function addOrderRow() {
 function deleteOrder(i) {
   if (confirm("確定刪除此筆訂單？")) {
     members[editingMemberIndex].orders.splice(i, 1);
+    saveToStorage();
     renderOrderRows();
+    renderTable();
   }
 }
 
