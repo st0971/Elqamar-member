@@ -127,6 +127,11 @@ input[type=number] {
 .error {
   color: rgb(247, 81, 81);
 }
+#login-error {
+  color: rgb(247, 81, 81);
+  margin-top: 8px;
+}
+
 
 /* ===== 會員名稱超連結樣式 ===== */
 /* 統一連結樣式：表格與 Modal 共用 */
