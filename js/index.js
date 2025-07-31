@@ -198,7 +198,15 @@ function renderOrderRows() {
         <input type="text" value="${formattedPrice}" data-index="${i}" data-field="price" />
       </td>
       <td><input type="checkbox" ${order.done ? "checked" : ""} data-index="${i}" data-field="done" /></td>
-      <td><input type="text" value="${order.note}" data-index="${i}" data-field="note" /></td>
+      <td>
+        <textarea 
+          rows="2"
+          data-index="${i}"
+          data-field="note"
+          title="${order.note}"
+          style="width: 100%; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+        >${order.note}</textarea>
+      </td>
       <td><button onclick="deleteOrder(${i})">刪除</button></td>
     `;
     tbody.appendChild(tr);
