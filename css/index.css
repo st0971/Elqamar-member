@@ -124,14 +124,14 @@ input[type=number] {
 }
 /* 限制價格欄位寬度，並右對齊數字 */
 #order-table td:nth-child(2) input[type="number"] {
-  max-width: 80px;
+  max-width: 40px;
   text-align: right;
 }
 
 /* 確保表頭與欄位對齊一致 */
 #order-table td:nth-child(2),
 #order-table th:nth-child(2) {
-  min-width: 80px;
+  min-width: 40px;
   text-align: center;
 }
 
