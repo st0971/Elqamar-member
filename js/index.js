@@ -1,4 +1,4 @@
-// 登入邏輯
+// 登入邏輯order-table
 const USERNAME = "Elqamar@";
 const PASSWORD = "Memberpage";
 
@@ -187,12 +187,16 @@ function renderOrderRows() {
   member.orders = member.orders || [];
 
   member.orders.forEach((order, i) => {
+    const formattedPrice = order.price.toLocaleString();
+
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>
         <textarea rows="2" data-index="${i}" data-field="product" title="${order.product}" style="width: 100%;">${order.product}</textarea>
       </td>
-      <td><input type="number" min="0" value="${order.price}" data-index="${i}" data-field="price" /></td>
+      <td>
+        <input type="text" value="${formattedPrice}" data-index="${i}" data-field="price" />
+      </td>
       <td><input type="checkbox" ${order.done ? "checked" : ""} data-index="${i}" data-field="done" /></td>
       <td><input type="text" value="${order.note}" data-index="${i}" data-field="note" /></td>
       <td><button onclick="deleteOrder(${i})">刪除</button></td>
@@ -200,19 +204,22 @@ function renderOrderRows() {
     tbody.appendChild(tr);
   });
 
-  // 綁定欄位變化事件
   tbody.querySelectorAll("input, textarea").forEach((input) => {
-    input.addEventListener("change", (e) => {
+    input.addEventListener("input", (e) => {
       const idx = parseInt(e.target.dataset.index);
       const field = e.target.dataset.field;
 
       if (field === "done") {
         members[editingMemberIndex].orders[idx][field] = e.target.checked;
       } else if (field === "price") {
-        let val = parseInt(e.target.value);
-        val = isNaN(val) ? 0 : Math.max(0, val); // 防止 NaN 和負數
+        // 去掉非數字字元，轉成數字
+        let val = e.target.value.replace(/,/g, '');
+        val = val.replace(/[^\d]/g, '');
+        val = val === '' ? 0 : parseInt(val);
         members[editingMemberIndex].orders[idx][field] = val;
-        e.target.value = val; // 同步修正輸入值
+
+        // 格式化顯示並設回輸入框
+        e.target.value = val.toLocaleString();
       } else {
         members[editingMemberIndex].orders[idx][field] = e.target.value;
       }
@@ -222,6 +229,7 @@ function renderOrderRows() {
     });
   });
 }
+
 
 
 function addOrderRow() {
