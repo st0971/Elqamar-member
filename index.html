@@ -2,6 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>會員管理系統</title>
   <link rel="stylesheet" href="css/index.css" />
   <style>
@@ -50,18 +51,19 @@
       <input type="text" id="search" placeholder="搜尋會員名稱" oninput="renderTable()" />
       <button onclick="openAddForm()">新增</button>
     </div>
-
-    <table id="member-table">
-      <thead>
-        <tr>
-          <th>編號</th>
-          <th>名稱</th>
-          <th>商品數量</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div id="member-table-wrapper">
+      <table id="member-table">
+        <thead>
+          <tr>
+            <th>編號</th>
+            <th>名稱</th>
+            <th>商品數量</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>    
   </div>
 
   <!-- 新增會員表單 -->
