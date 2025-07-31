@@ -131,6 +131,14 @@ input[type=number] {
   color: rgb(247, 81, 81);
   margin-top: 8px;
 }
+#login-page {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
 
 
 /* ===== 會員名稱超連結樣式 ===== */
@@ -152,6 +160,14 @@ a.member-link:hover {
 #modal-title a.member-link {
   font-size: 1.2em;
 }
+/* 限制商品欄位寬度，超出部分以...顯示 */
+#order-table td:nth-child(1) input[type="text"] {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 
 /* 表格內的連結補強，避免樣式被瀏覽器預設干擾 */
 #member-table a {
@@ -164,6 +180,10 @@ a.member-link:hover {
   color: #7896AC;
   text-decoration: underline;
 }
+#member-table-wrapper {
+  overflow-x: auto;
+}
+
 
 /* ===== 其他區塊樣式 ===== */
 .top-bar {
@@ -174,4 +194,63 @@ a.member-link:hover {
 
 .controls {
   margin-top: 15px;
+}
+/* ===== RWD 響應式設計 ===== */
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .controls input, .controls button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 20% auto;
+  }
+
+  #order-table th,
+  #order-table td {
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  #add-form {
+    padding: 10px;
+  }
+
+  #add-form input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%;
+    padding: 8px;
+  }
+
+  #member-table th,
+  #member-table td {
+    font-size: 14px;
+    padding: 6px;
+  }
+}
+
+#member-table-wrapper {
+  overflow-x: auto;
+}
+@media (max-width: 768px) {
+  #order-table td:nth-child(1) input[type="text"] {
+    white-space: normal;
+    word-break: break-word;
+  }
 }
