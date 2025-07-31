@@ -190,7 +190,7 @@ function renderOrderRows() {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>
-        <input type="text" value="${order.product}" data-index="${i}" data-field="product" title="${order.product}" />
+        <textarea rows="2" data-index="${i}" data-field="product" title="${order.product}" style="width: 100%;">${order.product}</textarea>
       </td>
       <td><input type="number" min="0" value="${order.price}" data-index="${i}" data-field="price" /></td>
       <td><input type="checkbox" ${order.done ? "checked" : ""} data-index="${i}" data-field="done" /></td>
@@ -201,7 +201,7 @@ function renderOrderRows() {
   });
 
   // 綁定欄位變化事件
-  tbody.querySelectorAll("input").forEach((input) => {
+  tbody.querySelectorAll("input, textarea").forEach((input) => {
     input.addEventListener("change", (e) => {
       const idx = parseInt(e.target.dataset.index);
       const field = e.target.dataset.field;
@@ -222,6 +222,7 @@ function renderOrderRows() {
     });
   });
 }
+
 
 function addOrderRow() {
   const member = members[editingMemberIndex];
