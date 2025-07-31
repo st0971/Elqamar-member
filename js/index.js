@@ -189,7 +189,9 @@ function renderOrderRows() {
   member.orders.forEach((order, i) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><input type="text" value="${order.product}" data-index="${i}" data-field="product" /></td>
+      <td>
+        <input type="text" value="${order.product}" data-index="${i}" data-field="product" title="${order.product}" />
+      </td>
       <td><input type="number" min="0" value="${order.price}" data-index="${i}" data-field="price" /></td>
       <td><input type="checkbox" ${order.done ? "checked" : ""} data-index="${i}" data-field="done" /></td>
       <td><input type="text" value="${order.note}" data-index="${i}" data-field="note" /></td>
