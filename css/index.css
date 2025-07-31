@@ -123,10 +123,16 @@ input[type=number] {
   white-space: nowrap;
 }
 /* 限制價格欄位寬度，並右對齊數字 */
+#order-table td:nth-child(2) input[type="text"],
 #order-table td:nth-child(2) input[type="number"] {
-  max-width: 40px;
+  max-width: 100px;
+  padding: 4px 6px;
+  font-size: 14px;
   text-align: right;
+  box-sizing: border-box;
+  height: 28px;
 }
+
 
 /* 確保表頭與欄位對齊一致 */
 #order-table td:nth-child(2),
