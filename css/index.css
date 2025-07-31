@@ -140,6 +140,13 @@ input[type=number] {
   min-width: 40px;
   text-align: center;
 }
+/* 限制備註欄位寬度，並加上省略號 */
+#order-table td:nth-child(4) input[type="text"] {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 /* ===== 錯誤訊息樣式 ===== */
 .error {
@@ -270,5 +277,10 @@ a.member-link:hover {
   #order-table td:nth-child(1) input[type="text"] {
     white-space: normal;
     word-break: break-word;
+  }
+  #order-table td:nth-child(4) textarea {
+    white-space: normal;
+    word-break: break-word;
+    max-width: 100%;
   }
 }
